@@ -53,6 +53,42 @@ def busquedaBinaria(datos, buscar):
         print('BUSQUEDA BINARIA: No se encontró el número dentro del array.')
 
 
+# ALGORITMO DE BUSQUEDA FIBONACCI
+def BusquedaFibonacci(datos, buscar):
+    iteraciones = 0
+    exit = 0
+    fibM_minus_2 = 0
+    fibM_minus_1 = 1
+    fibM = fibM_minus_1 + fibM_minus_2
+    while (fibM < len(datos)):
+        iteraciones = 0
+        fibM_minus_2 = fibM_minus_1
+        fibM_minus_1 = fibM
+        fibM = fibM_minus_1 + fibM_minus_2
+    index = -1
+    while (fibM > 1):
+        i = min(index + fibM_minus_2, (len(datos)-1))
+        if (datos[i] < buscar):
+            iteraciones += 1
+            fibM = fibM_minus_1
+            fibM_minus_1 = fibM_minus_2
+            fibM_minus_2 = fibM - fibM_minus_1
+            index = i
+        elif (datos[i] > buscar):
+            iteraciones += 1
+            fibM = fibM_minus_2
+            fibM_minus_1 = fibM_minus_1 - fibM_minus_2
+            fibM_minus_2 = fibM - fibM_minus_1
+        else:
+            print('BUSQUEDA FIBONACCI: Número encontrado en la posición', i, 'Iterando', iteraciones, 'veces.')
+            exit = 1
+            break
+    if (fibM_minus_1 and index < (len(datos)-1) and datos[index+1] == buscar and exit != 1):
+        print('BUSQUEDA FIBONACCI: Número encontrado en la posición', index + 1)
+    elif (exit != 1):
+        print('BUSQUEDA FIBONACCI: No se encontró el número dentro del array.')
+
+
 # ===============================================
 # INICIO GENERAR ARRAY COMPLETAMENTE DESORDENADO
 generarArrayLongitud100()
@@ -79,6 +115,9 @@ busquedaLineal(numeros, search)
 print()
 print('Valor a buscar en array ordenado por SELECCION mediante BUSQUEDA BINARIA:', search)
 busquedaBinaria(numeros, search)
+print()
+print('Valor a buscar en array ordenado por SELECCION mediante BUSQUEDA FIBONACCI:', search)
+BusquedaFibonacci(numeros, search)
 # FIN ARRAY DESORDENADO
 # =========================
 
