@@ -2,20 +2,64 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"math"
+	"math/rand"
 	"time"
+	//"log"
+	//"time"
 )
 
+// func main() {
+// 	arr_original := []int{412, 12, 123, 1, 2324, 3, 155, 23412, 2}
+
+// 	start := time.Now()
+// 	arr_ordenado := selection_sort(arr_original)
+
+// 	fmt.Println(arr_ordenado)
+
+// 	elapsed := time.Since(start)
+// 	log.Printf("\nSelection Sort tomó: %s", elapsed)
+
+// 	arr_original2 := []int{412, 12, 123, 1, 2324, 3, 155, 23412, 2}
+// 	start2 := time.Now()
+// 	arr_ordenado2 := selection_sortInv(arr_original2)
+// 	fmt.Println(arr_ordenado2)
+// 	elapsed2 := time.Since(start2)
+// 	log.Printf("\nSelection Sort Inv tomó: %s", elapsed2)
+// }
+
 func main() {
-	arr_original := []int{412, 12, 123, 1, 2324, 3, 155, 23412, 2}
+	n := 10 //definir tamaño del arreglo
+	arregloDeNumeros := generarNumeros(n)
+	r := rand.New(rand.NewSource(time.Now().UnixNano())) //se elige un número al azar para buscar
+	var pos int = r.Intn(n-0) + 0                        //se elige un número al azar para buscar
+	busquedaNumerica := arregloDeNumeros[pos]            //se elige un número al azar para buscar
 
-	start := time.Now()
-	arr_ordenado := selection_sort(arr_original)
+	//para arreglo ordenado m-M
+	fmt.Println("BUSQUEDA CON ARREGLO ORDENADO DE MENOR A MAYOR")
+	arregloOrdenado := selection_sort(arregloDeNumeros)
+	resultadoBusquedaNumericaBinaria := busquedaBinariaRecursiva(arregloOrdenado, busquedaNumerica, 0, len(arregloOrdenado)-1)
+	fmt.Printf("Buscando(Binaria) %d en el arreglo... el índice devuelto es %d\n", busquedaNumerica, resultadoBusquedaNumericaBinaria)
+	resultadoBusquedaNumericaSecuencial := BusquedaSecuencial(arregloOrdenado, busquedaNumerica)
+	fmt.Printf("Buscando(Secuencial) %d en el arreglo... el índice devuelto es %d\n\n", busquedaNumerica, resultadoBusquedaNumericaSecuencial)
 
-	fmt.Println(arr_ordenado)
+	//para arreglo ordenado M-m
+	fmt.Println("BUSQUEDA CON ARREGLO ORDENADO DE MAYOR A MENOR")
+	arregloOrdenadoMm := selection_sortInv(arregloDeNumeros)
+	resultadoBusquedaNumericaBinariaMn := busquedaBinariaRecursiva(arregloOrdenadoMm, busquedaNumerica, 0, len(arregloOrdenado)-1)
+	fmt.Printf("Buscando(Binaria) %d en el arreglo... el índice devuelto es %d\n", busquedaNumerica, resultadoBusquedaNumericaBinariaMn)
+	resultadoBusquedaNumericaSecuencialMn := BusquedaSecuencial(arregloOrdenadoMm, busquedaNumerica)
+	fmt.Printf("Buscando(Secuencial) %d en el arreglo... el índice devuelto es %d\n\n", busquedaNumerica, resultadoBusquedaNumericaSecuencialMn)
 
-	elapsed := time.Since(start)
-	log.Printf("\nSelection Sort tomó: %s", elapsed)
+	//para arreglo parcialmente ordenado
+
+	//para arreglo desordenado
+	fmt.Println("BUSQUEDA CON ARREGLO DESORDENADO")
+	arregloDesordenado := Mezclar(arregloDeNumeros)
+	resultadoBusquedaDesordenadaBinaria := busquedaBinariaRecursiva(arregloDesordenado, busquedaNumerica, 0, len(arregloOrdenado)-1)
+	fmt.Printf("Buscando(Binaria) %d en el arreglo... el índice devuelto es %d\n", busquedaNumerica, resultadoBusquedaDesordenadaBinaria)
+	resultadoBusquedaDesordenadaSecuencial := BusquedaSecuencial(arregloDesordenado, busquedaNumerica)
+	fmt.Printf("Buscando(Secuencial) %d en el arreglo... el índice devuelto es %d\n\n", busquedaNumerica, resultadoBusquedaDesordenadaSecuencial)
 }
 
 func selection_sort(arreglo []int) []int {
@@ -38,4 +82,82 @@ func selection_sort(arreglo []int) []int {
 	}
 
 	return arreglo
+}
+
+func selection_sortInv(arreglo []int) []int {
+	for i := 0; i < len(arreglo); i++ {
+		minimo_encontrado, posicion_minimo := arreglo[i], i
+
+		valor_original := arreglo[i]
+		// encontrar minimo en parte desordenada
+		for j := i + 1; j < len(arreglo); j++ {
+			valor_comparacion := arreglo[j]
+			if valor_comparacion > minimo_encontrado {
+				minimo_encontrado, posicion_minimo = valor_comparacion, j
+			}
+		}
+
+		if minimo_encontrado != valor_original {
+			// intercambio posiciones con primer desordenado
+			arreglo[i], arreglo[posicion_minimo] = minimo_encontrado, valor_original
+		}
+	}
+
+	return arreglo
+}
+
+func Mezclar(a []int) []int {
+	array := make([]int, len(a))
+	rand.Seed(time.Now().UTC().UnixNano())
+	perm := rand.Perm(len(a))
+
+	for i, v := range perm {
+		array[v] = a[i]
+	}
+	return array
+}
+
+func generarNumeros(valor int) []int {
+	//n := 15
+	//fmt.Println(n)
+	//var numeros [15]int
+	numeros := make([]int, valor)
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	var ale int
+	for f := 0; f < valor; f++ {
+		ale = r.Intn(99999-10000) + 10000
+		numeros[f] = ale
+	}
+	//fmt.Println(numeros)
+	return numeros
+}
+
+func busquedaBinariaRecursiva(arreglo []int, busqueda, izquierda, derecha int) (indice int) {
+	if izquierda > derecha {
+		return -1
+	}
+	indiceDelMedio := int(math.Floor((float64(izquierda+derecha) / 2)))
+	elementoDelMedio := arreglo[indiceDelMedio]
+	if elementoDelMedio == busqueda {
+		return indiceDelMedio
+	}
+	if busqueda < elementoDelMedio {
+		derecha = indiceDelMedio - 1
+	} else {
+		izquierda = indiceDelMedio + 1
+	}
+	return busquedaBinariaRecursiva(arreglo, busqueda, izquierda, derecha)
+}
+
+func BusquedaSecuencial(numeros []int, valor int) int {
+	// recorrer el arreglo numeros hasta encontrar el valor
+	for k, v := range numeros {
+		// verificar si el valor iterado coincide con el que se busca
+		if v == valor {
+			// retornar el indice
+			return k
+		}
+	}
+	// retornar -1 si ningun valor coincide
+	return -1
 }
