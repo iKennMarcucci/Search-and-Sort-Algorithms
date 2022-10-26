@@ -30,10 +30,10 @@ def generarArrayOrdenado_Mm():
 
 # GENERADOR DE ARRAYS PARCIALMENTE ORDENADOS
 def generarArrayParcial():
-    i = 40000
-    j = 40050
-    while i != 40050:  # 10^2 (Si desea cambiar tamaño, agregar 0's)
-        while j != 40100:  # 10^2 (Si desea cambiar tamaño, agregar 0's)
+    i = 10000
+    j = 10050
+    while i != 10050:  # 10^2 (Si desea cambiar tamaño, agregar 0's)
+        while j != 10100:  # 10^2 (Si desea cambiar tamaño, agregar 0's)
             num = j
             j += 1
             numeros.append(num)
@@ -42,16 +42,34 @@ def generarArrayParcial():
         numeros.append(num)
 
 
-# ALGORITMOS DE ORDENAMIENTO POR SELECCION
-def Seleccion(array):
-    longitud = len(array)
-    for i in range(longitud - 1):
-        for j in range(i + 1, longitud):
-            if array[i] > array[j]:
-                array[i], array[j] = array[j], array[i]
+# ALGORITMOS DE ORDENAMIENTO POR QUICKSORT
+def partition(array, start, end):
+    pivot = array[start]
+    low = start + 1
+    high = end
+    while True:
+        while low <= high and array[high] >= pivot:
+            high = high - 1
+        while low <= high and array[low] <= pivot:
+            low = low + 1
+        if low <= high:
+            array[low], array[high] = array[high], array[low]
+        else:
+            break
+    array[start], array[high] = array[high], array[start]
+    return high
 
+
+def Quicksort(array, start, end):
+    if start >= end:
+        return
+    p = partition(array, start, end)
+    Quicksort(array, start, p - 1)
+    Quicksort(array, p + 1, end)
 
 # ALGORITMO DE BUSQUEDA LINEAL
+
+
 def busquedaLineal(datos, buscar):
     i = 0
     for x in datos:
@@ -133,28 +151,28 @@ generarArrayDesordenado()
 print()
 print()
 
-# ===============================
-# INICIO PROCESO SEARCH AND SORT
+# =========================
+# INICIO ARRAY DESORDENADO
 print("ARRAY COMPLETAMENTE DESORDENADO:")
 print(numeros)
-Seleccion(numeros)
+Quicksort(numeros, 0, len(numeros) - 1)
 print()
-print("ARRAY ORDENADO POR SELECCION:")
+print("ARRAY ORDENADO POR QUICKSORT:")
 print(numeros)
 print()
 print()
 
 search = random.choice(numeros)
-print('Valor a buscar en array ordenado por SELECCION mediante BUSQUEDA LINEAL:', search)
+print('Valor a buscar en array ordenado por QUICKSORT mediante BUSQUEDA LINEAL:', search)
 busquedaLineal(numeros, search)
 print()
-print('Valor a buscar en array ordenado por SELECCION mediante BUSQUEDA BINARIA:', search)
+print('Valor a buscar en array ordenado por QUICKSORT mediante BUSQUEDA BINARIA:', search)
 busquedaBinaria(numeros, search)
 print()
-print('Valor a buscar en array ordenado por SELECCION mediante BUSQUEDA FIBONACCI:', search)
+print('Valor a buscar en array ordenado por QUICKSORT mediante BUSQUEDA FIBONACCI:', search)
 BusquedaFibonacci(numeros, search)
-# FIN PROCESO SEARCH AND SORT
-# ===============================
+# FIN ARRAY DESORDENADO
+# =========================
 
 print()
 print()

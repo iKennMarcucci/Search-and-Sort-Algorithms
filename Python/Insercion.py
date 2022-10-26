@@ -30,10 +30,10 @@ def generarArrayOrdenado_Mm():
 
 # GENERADOR DE ARRAYS PARCIALMENTE ORDENADOS
 def generarArrayParcial():
-    i = 40000
-    j = 40050
-    while i != 40050:  # 10^2 (Si desea cambiar tamaño, agregar 0's)
-        while j != 40100:  # 10^2 (Si desea cambiar tamaño, agregar 0's)
+    i = 10000
+    j = 10050
+    while i != 10050:  # 10^2 (Si desea cambiar tamaño, agregar 0's)
+        while j != 10100:  # 10^2 (Si desea cambiar tamaño, agregar 0's)
             num = j
             j += 1
             numeros.append(num)
@@ -42,13 +42,14 @@ def generarArrayParcial():
         numeros.append(num)
 
 
-# ALGORITMOS DE ORDENAMIENTO POR SELECCION
-def Seleccion(array):
-    longitud = len(array)
-    for i in range(longitud - 1):
-        for j in range(i + 1, longitud):
-            if array[i] > array[j]:
-                array[i], array[j] = array[j], array[i]
+# ALGORITMOS DE ORDENAMIENTO POR INSERCION
+def Insercion(array):
+    for i in range(len(array)):
+        for j in range(i, 0, -1):
+            if (array[j - 1] > array[j]):
+                aux = array[j]
+                array[j] = array[j - 1]
+                array[j - 1] = aux
 
 
 # ALGORITMO DE BUSQUEDA LINEAL
@@ -133,28 +134,28 @@ generarArrayDesordenado()
 print()
 print()
 
-# ===============================
-# INICIO PROCESO SEARCH AND SORT
+# =========================
+# INICIO ARRAY DESORDENADO
 print("ARRAY COMPLETAMENTE DESORDENADO:")
 print(numeros)
-Seleccion(numeros)
+Insercion(numeros)
 print()
-print("ARRAY ORDENADO POR SELECCION:")
+print("ARRAY ORDENADO POR INSERCION:")
 print(numeros)
 print()
 print()
 
 search = random.choice(numeros)
-print('Valor a buscar en array ordenado por SELECCION mediante BUSQUEDA LINEAL:', search)
+print('Valor a buscar en array ordenado por INSERCION mediante BUSQUEDA LINEAL:', search)
 busquedaLineal(numeros, search)
 print()
-print('Valor a buscar en array ordenado por SELECCION mediante BUSQUEDA BINARIA:', search)
+print('Valor a buscar en array ordenado por INSERCION mediante BUSQUEDA BINARIA:', search)
 busquedaBinaria(numeros, search)
 print()
-print('Valor a buscar en array ordenado por SELECCION mediante BUSQUEDA FIBONACCI:', search)
+print('Valor a buscar en array ordenado por INSERCION mediante BUSQUEDA FIBONACCI:', search)
 BusquedaFibonacci(numeros, search)
-# FIN PROCESO SEARCH AND SORT
-# ===============================
+# FIN ARRAY DESORDENADO
+# =========================
 
 print()
 print()
