@@ -19,7 +19,7 @@ import (
 // }
 
 func main() {
-	n := 10 //definir tamaño del arreglo
+	n := 1000000 //definir tamaño del arreglo
 	arregloDeNumeros := generarNumeros(n)
 	r := rand.New(rand.NewSource(time.Now().UnixNano())) //se elige un número al azar para buscar
 	var pos int = r.Intn(n-0) + 0                        //se elige un número al azar para buscar
@@ -28,7 +28,7 @@ func main() {
 	//para arreglo ordenado m-M
 	fmt.Println("BUSQUEDA CON ARREGLO ORDENADO DE MENOR A MAYOR")
 	arregloOrdenado := shellSort(arregloDeNumeros, len(arregloDeNumeros))
-	resultadoBusquedaNumericaBinaria := busquedaBinariaRecursiva(arregloOrdenado, busquedaNumerica, 0, len(arregloOrdenado)-1)
+	resultadoBusquedaNumericaBinaria := busquedaBinaria(arregloOrdenado, busquedaNumerica)
 	fmt.Printf("Buscando(Binaria) %d en el arreglo... el índice devuelto es %d\n", busquedaNumerica, resultadoBusquedaNumericaBinaria)
 	resultadoBusquedaNumericaSecuencial := BusquedaSecuencial(arregloOrdenado, busquedaNumerica)
 	fmt.Printf("Buscando(Secuencial) %d en el arreglo... el índice devuelto es %d\n\n", busquedaNumerica, resultadoBusquedaNumericaSecuencial)
@@ -36,7 +36,7 @@ func main() {
 	//para arreglo ordenado M-m
 	fmt.Println("BUSQUEDA CON ARREGLO ORDENADO DE MAYOR A MENOR")
 	arregloOrdenadoMm := shellSortInv(arregloDeNumeros, len(arregloDeNumeros))
-	resultadoBusquedaNumericaBinariaMn := busquedaBinariaRecursiva(arregloOrdenadoMm, busquedaNumerica, 0, len(arregloOrdenado)-1)
+	resultadoBusquedaNumericaBinariaMn := busquedaBinaria(arregloOrdenado, busquedaNumerica)
 	fmt.Printf("Buscando(Binaria) %d en el arreglo... el índice devuelto es %d\n", busquedaNumerica, resultadoBusquedaNumericaBinariaMn)
 	resultadoBusquedaNumericaSecuencialMn := BusquedaSecuencial(arregloOrdenadoMm, busquedaNumerica)
 	fmt.Printf("Buscando(Secuencial) %d en el arreglo... el índice devuelto es %d\n\n", busquedaNumerica, resultadoBusquedaNumericaSecuencialMn)
@@ -46,20 +46,23 @@ func main() {
 	//para arreglo desordenado
 	fmt.Println("BUSQUEDA CON ARREGLO DESORDENADO")
 	arregloDesordenado := Mezclar(arregloDeNumeros)
-	resultadoBusquedaDesordenadaBinaria := busquedaBinariaRecursiva(arregloDesordenado, busquedaNumerica, 0, len(arregloOrdenado)-1)
+	resultadoBusquedaDesordenadaBinaria := busquedaBinaria(arregloOrdenado, busquedaNumerica)
 	fmt.Printf("Buscando(Binaria) %d en el arreglo... el índice devuelto es %d\n", busquedaNumerica, resultadoBusquedaDesordenadaBinaria)
 	resultadoBusquedaDesordenadaSecuencial := BusquedaSecuencial(arregloDesordenado, busquedaNumerica)
 	fmt.Printf("Buscando(Secuencial) %d en el arreglo... el índice devuelto es %d\n\n", busquedaNumerica, resultadoBusquedaDesordenadaSecuencial)
 }
 
 func shellSort(A []int, n int) []int {
+	var iter = 0
 	for interval := int(n / 2); interval > 0; interval /= 2 {
 		for j := interval; j < n; j++ {
 			for k := j; k >= interval && A[k-interval] > A[k]; k -= interval {
 				A[k], A[k-interval] = A[k-interval], A[k]
+				iter++
 			}
 		}
 	}
+	fmt.Printf("Iteraciones de ordenamiento por Shell: %d \n", iter)
 	return A
 }
 
@@ -118,6 +121,7 @@ func busquedaBinariaRecursiva(arreglo []int, busqueda, izquierda, derecha int) (
 }
 
 func BusquedaSecuencial(numeros []int, valor int) int {
+	var iter = 0
 	// recorrer el arreglo numeros hasta encontrar el valor
 	for k, v := range numeros {
 		// verificar si el valor iterado coincide con el que se busca
@@ -125,7 +129,35 @@ func BusquedaSecuencial(numeros []int, valor int) int {
 			// retornar el indice
 			return k
 		}
+		iter++
 	}
+	fmt.Printf("Iteraciones de Busqueda Secuencial: %d \n", iter)
 	// retornar -1 si ningun valor coincide
+	return -1
+}
+
+func busquedaBinaria(arreglo []int, busqueda int) (indice int) {
+	var iter = 0
+	izquierda := 0
+	derecha := len(arreglo) - 1
+
+	/*
+	   Recordemos que For is Go's "while"
+	   https://tour.golang.org/flowcontrol/3
+	*/
+	for izquierda <= derecha {
+		indiceDelMedio := int(math.Floor((float64(izquierda+derecha) / 2)))
+		elementoDelMedio := arreglo[indiceDelMedio]
+		if elementoDelMedio == busqueda {
+			return indiceDelMedio
+		}
+		if busqueda < elementoDelMedio {
+			derecha = indiceDelMedio - 1
+		} else {
+			izquierda = indiceDelMedio + 1
+		}
+		iter++
+	}
+	fmt.Printf("Iteraciones de Busqueda Binaria: %d \n", iter)
 	return -1
 }
