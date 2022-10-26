@@ -1,36 +1,35 @@
-function partition(arr, start, end) {
-    // Taking the last element as the pivot
-    const pivotValue = arr[end];
-    let pivotIndex = start;
-    for (let i = start; i < end; i++) {
-        if (arr[i] < pivotValue) {
-            // Swapping elements
-            [arr[i], arr[pivotIndex]] = [arr[pivotIndex], arr[i]];
-            // Moving to next element
-            pivotIndex++;
-        }
+import { printMsg1, printMsg2 } from '../NumberGen/RandomInt.js'
+
+function quickSort(arr, start = 0, end = arr.length + 1) {
+  let pivot = arr[start];
+  let swapIndex = start;
+  let it = 0;
+
+  for (let i = start + 1; i < arr.length; i++) {
+    if (pivot > arr[i]) {
+      swapIndex++;
+      swap(arr, i, swapIndex);
     }
+    it++;
+  }
+  swap(arr, start, swapIndex);
 
-    // Putting the pivot value in the middle
-    [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]]
-    return pivotIndex;
-};
-
-function quickSortRecursive(arr, start, end) {
-    // Base case or terminating case
-    if (start >= end) {
-        return;
-    }
-
-    // Returns pivotIndex
-    let index = partition(arr, start, end);
-
-    // Recursively apply the same logic to the left and right subarrays
-    quickSort(arr, start, index - 1);
-    quickSort(arr, index + 1, end);
+  process.stdout.write("\nQUICK SORT\n");
+  process.stdout.write("Iteraciones = "+it+"\n")
+  
+  return swapIndex;
+  
+  function swap(arr, firstIndex, secondIndex) {
+    [arr[firstIndex], arr[secondIndex]] = [arr[secondIndex], arr[firstIndex]];
+  }
 }
 
-let arr = [7, -2, 4, 1, 6, 5, 0, -4, 2]
-quickSortRecursive(arr, 0, arr.length - 1)
+// Unsorted array
+// let arr = [234, 43, 55, 63, 5, 6, 235, 547];
+// let high = (arr.length)-1;
 
-console.log(arr)
+// printMsg1(arr);
+// quickSort(arr)
+// printMsg2(arr);
+
+export {quickSort};

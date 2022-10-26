@@ -1,9 +1,8 @@
+import {printMsg1, printMsg2} from '../NumberGen/RandomInt.js'
 
-let arr = [5, 2, 4, 6, 1, 3];
-
-function selectionSort(inputArr) { 
+function selectionSort(arr) { 
     let n = arr.length;
-        
+    let it = 0;
     for(let i = 0; i < n; i++) {
         // Finding the smallest number in the subarray
         let min = i;
@@ -18,9 +17,18 @@ function selectionSort(inputArr) {
              arr[i] = arr[min];
              arr[min] = tmp;      
         }
+        it++;
     }
+    process.stdout.write("\nSELECTION SORT\n");
+    process.stdout.write("Iteraciones = "+it+"\n")
     return arr;
 }
 
-selectionSort(arr);
-console.log(arr);
+//Unsorted array
+//TEST
+// let arr = [234, 43, 55, 63, 5, 6, 235, 547];
+
+// printMsg1(arr);
+// printMsg2(selectionSort(arr));
+
+export {selectionSort};

@@ -1,34 +1,29 @@
+import {printMsg1, printMsg2} from '../NumberGen/RandomInt.js'
 
-function insertionSort(arr, n) {
-    let i, key, j;
-    for (i = 1; i < n; i++) {
-        key = arr[i];
-        j = i - 1;
-
-        /* Move elements of arr[0..i-1], that are 
-        greater than key, to one position ahead 
-        of their current position */
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j = j - 1;
-        }
-        arr[j + 1] = key;
+function insertionSort (arr){
+    let it = 0;
+    for (let i = 1; i < arr.length; i++) {
+      let j = i - 1
+      
+      let temp = arr[i]
+      it++;
+      while (j >= 0 && arr[j] > temp) {
+        arr[j + 1] = arr[j]
+        j--
+        it++;
+      }
+      arr[j+1] = temp
     }
-}
+    process.stdout.write("\nINSERTION SORT\n");
+    process.stdout.write("Iteraciones = "+it+"\n")
+    return arr
+  }
 
+//Unsorted array
+//TEST
+// let arr = [234, 43, 55, 63, 5, 6, 235, 547];
 
-// // A utility function to print an array of size n 
-// function printArray(arr, n) {
-//     let i;
-//     for (i = 0; i < n; i++)
-//         console.log(arr[i] + " ");
-// }
+// printMsg1(arr);
+// printMsg2(insertionSort(arr));
 
-// Driver code
-let arr = [12, 11, 13, 5, 6];
-let n = arr.length;
-
-insertionSort(arr, n);
-console.log(arr);
-
-// This code is contributed by Mayank Tyagi
+export {insertionSort};
