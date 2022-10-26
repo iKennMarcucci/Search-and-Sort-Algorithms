@@ -61,15 +61,17 @@ function fibMonaccianSearch(arr, x, n)
 }
   
 /* driver code */
-    let arr = [10, 22, 35, 40, 45, 50, 80, 82,85, 90, 100,235];
-    let n = arr.length;
-    let x = 235;
-    let ind = fibMonaccianSearch(arr, x, n);
+    // let arr = [10, 22, 35, 40, 45, 50, 80, 82,85, 90, 100,235];
+    // let n = arr.length;
+    // let x = 235;
+    // let ind = fibMonaccianSearch(arr, x, n);
 	
-    if(ind>=0){
-       console.log("Found at index: " + ind);
-    }else{
-		console.log(x + " isn't present in the array");
-    }
+    // if(ind>=0){
+    //    console.log("\nElement found " + ind);
+    // }else{
+	// 	console.log(x + " Element not found!\n");
+    // }
   
 // This code is contributed by _saurabh_jaiswal
+
+export {fibMonaccianSearch as fibonacciSearch};
